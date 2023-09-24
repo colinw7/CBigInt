@@ -29,7 +29,7 @@ operator+(const CBigInt &a, const CBigInt &b)
     else {
       ulong value1 = a.value_ + b.value_;
 
-      if (value1 < std::max(a.value_, b.value_) || ((long) value1) < 0) {
+      if (value1 < std::max(a.value_, b.value_) || long(value1) < 0) {
         CBigInt a1 = a;
         CBigInt b1 = b;
 
@@ -45,16 +45,16 @@ operator+(const CBigInt &a, const CBigInt &b)
   c.str_      = "0";
   c.is_value_ = false;
 
-  int size1 = a.str_.size();
-  int size2 = b.str_.size();
+  auto size1 = a.str_.size();
+  auto size2 = b.str_.size();
 
-  int max_size = (size1 > size2 ? size1 : size2);
+  size_t max_size = (size1 > size2 ? size1 : size2);
 
   int carry = 0;
 
   int pos = 0;
 
-  for (int i = 0; i < max_size; i++) {
+  for (uint i = 0; i < max_size; i++) {
     int sum = a.getDigit(i) + b.getDigit(i) + carry;
 
     c.setDigit(sum % 10, pos++);
@@ -100,7 +100,7 @@ operator-(const CBigInt &a, const CBigInt &b)
     else {
       ulong value1 = a.value_ - b.value_;
 
-      if (value1 > std::max(a.value_, b.value_) || ((long) value1) < 0) {
+      if (value1 > std::max(a.value_, b.value_) || long(value1) < 0) {
         CBigInt a1 = a;
         CBigInt b1 = b;
 
@@ -116,13 +116,13 @@ operator-(const CBigInt &a, const CBigInt &b)
   c.str_      = "0";
   c.is_value_ = false;
 
-  int size1 = a.str_.size();
+  auto size1 = a.str_.size();
 
   int carry = 0;
 
   int pos = 0;
 
-  int i = 0;
+  uint i = 0;
 
   while (i < size1) {
     int diff = a.getDigit(i) - b.getDigit(i) + carry;
@@ -172,7 +172,7 @@ operator*(const CBigInt &a, const CBigInt &b)
     else {
       ulong value1 = a.value_ * b.value_;
 
-      if (value1 < std::max(a.value_, b.value_) || ((long) value1) < 0) {
+      if (value1 < std::max(a.value_, b.value_) || long(value1) < 0) {
         CBigInt a1 = a;
         CBigInt b1 = b;
 
@@ -185,9 +185,9 @@ operator*(const CBigInt &a, const CBigInt &b)
 
   CBigInt c;
 
-  int size2 = b.str_.size();
+  auto size2 = b.str_.size();
 
-  for (int i = 0; i < size2; i++) {
+  for (uint i = 0; i < size2; i++) {
     CBigInt c1 = a.multiplyByDigit(b.getDigit(i));
 
     c1.shiftLeft(i);
@@ -202,7 +202,7 @@ CBigInt
 CBigInt::
 multiplyByDigit(int multiplier) const
 {
-  int size = str_.size();
+  auto size = str_.size();
 
   CBigInt c;
 
@@ -213,7 +213,7 @@ multiplyByDigit(int multiplier) const
 
   int pos = 0;
 
-  for (int i = 0; i < size; i++) {
+  for (uint i = 0; i < size; i++) {
     int product = getDigit(i)*multiplier + carry;
 
     carry = product / 10;
@@ -262,7 +262,7 @@ operator/(const CBigInt &a, const CBigInt &b)
     else {
       ulong value1 = a.value_ / b.value_;
 
-      if (value1 > std::max(a.value_, b.value_) || ((long) value1) < 0) {
+      if (value1 > std::max(a.value_, b.value_) || long(value1) < 0) {
         CBigInt a1 = a;
         CBigInt b1 = b;
 
@@ -284,9 +284,9 @@ operator/(const CBigInt &a, const CBigInt &b)
 
   int dpos = 0;
 
-  int size = a.str_.size();
+  auto size = a.str_.size();
 
-  for (int i = 0; i < size; i++) {
+  for (uint i = 0; i < size; i++) {
     if (dpos > 0)
       d.shiftLeft(1);
 
@@ -354,7 +354,7 @@ operator%(const CBigInt &a, const CBigInt &b)
     else {
       ulong value1 = a.value_ % b.value_;
 
-      if (value1 > std::max(a.value_, b.value_) || ((long) value1) < 0) {
+      if (value1 > std::max(a.value_, b.value_) || long(value1) < 0) {
         CBigInt a1 = a;
         CBigInt b1 = b;
 
@@ -369,9 +369,9 @@ operator%(const CBigInt &a, const CBigInt &b)
 
   int cpos = 0;
 
-  int size = a.str_.size();
+  auto size = a.str_.size();
 
-  for (int i = 0; i < size; i++) {
+  for (uint i = 0; i < size; i++) {
     if (cpos > 0)
       c.shiftLeft(1);
 
@@ -433,8 +433,8 @@ operator<(const CBigInt &a, const CBigInt &b)
       return a.value_ < b.value_;
   }
 
-  int size1 = a.str_.size();
-  int size2 = b.str_.size();
+  auto size1 = a.str_.size();
+  auto size2 = b.str_.size();
 
   if (size1 != size2)
     return size1 < size2;
@@ -478,8 +478,8 @@ operator>(const CBigInt &a, const CBigInt &b)
       return a.value_ > b.value_;
   }
 
-  int size1 = a.str_.size();
-  int size2 = b.str_.size();
+  auto size1 = a.str_.size();
+  auto size2 = b.str_.size();
 
   if (size1 != size2)
     return size1 > size2;
@@ -526,8 +526,8 @@ operator==(const CBigInt &a, const CBigInt &b)
       return a.value_ == b.value_;
   }
 
-  int size1 = a.str_.size();
-  int size2 = b.str_.size();
+  auto size1 = a.str_.size();
+  auto size2 = b.str_.size();
 
   if (size1 != size2)
     return false;

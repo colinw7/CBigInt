@@ -252,7 +252,7 @@ class CBigInt {
     is_negative_ = false;
     is_value_    = false;
 
-    uint len = str.size();
+    auto len = str.size();
 
     if (len < 1) {
       CTHROW("Invalid Integer");
@@ -322,26 +322,26 @@ class CBigInt {
   CBigInt multiplyByDigit(int multiplier) const;
 
   void setDigit(int digit, int pos) {
-    char c = (digit + '0');
+    char c = char(digit + int('0'));
 
-    while (pos >= (int) str_.size())
+    while (pos >= int(str_.size()))
       str_ = "0" + str_;
 
     str_[str_.size() - pos - 1] = c;
   }
 
   int getDigit(int pos) const {
-    if (pos < 0 || pos >= (int) str_.size())
+    if (pos < 0 || pos >= int(str_.size()))
       return 0;
 
-    return (int) (str_[str_.size() - pos - 1] - '0');
+    return int(str_[str_.size() - pos - 1] - '0');
   }
 
   int getRDigit(int pos) const {
-    if (pos < 0 || pos >= (int) str_.size())
+    if (pos < 0 || pos >= int(str_.size()))
       return 0;
 
-    return (int) (str_[pos] - '0');
+    return int(str_[pos] - '0');
   }
 
   void shiftLeft(int num) {
